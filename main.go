@@ -9,7 +9,6 @@ import (
 
 const port string = ":4000";
 
-// omitempty -> hide the field
 type URLDescription struct {
 	URL string `json:"url"` // JSON일 때 (소문자)url로 변경된다는 뜻
 	Method string `json:"method"`
