@@ -1,6 +1,8 @@
 package db
 
 import (
+	"fmt"
+
 	"github.com/DianaLeee/gocoin/utils"
 	"github.com/boltdb/bolt"
 )
@@ -33,4 +35,24 @@ func DB() *bolt.DB {
 
 	}
 	return db;
+}
+
+func SaveBlock(hash string, data []byte) {
+	fmt.Printf("Saving Block %s\nData: %b\n", hash, data);
+	err := DB().Update(func(t *bolt.Tx) error {
+		bucket := t.Bucket([]byte(blocksBucket));
+		err := bucket.Put([]byte(hash), data); // Put KEY & VALUE
+		return err;
+	})
+	utils.HandleErr(err);
+}
+
+func SaveBlockchain(data []byte) {
+	err := DB().Update(func(t *bolt.Tx) error {
+		bucket := t.Bucket([]byte(dataBucket));
+		err := bucket.Put([]byte("checkpoint"), data);
+		return err;
+	})
+	utils.HandleErr(err);
+
 }
